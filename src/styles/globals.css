@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+
+:root {
+  --foreground: #ffffff;
+  --dark-gray: #161616;
+  --rose-gold: #c5a288;
+  --sea-mist: #d5c9a7;
+  --black-forest: #45413e;
+  --desert-palm: #574735;
+  --ketchup: #8f3f32;
+}
+
+@theme inline {
+  --color-foreground: var(--foreground);
+  --color-background: var(--dark-gray);
+  --color-dark-gray: var(--dark-gray);
+  --color-rose-gold: var(--rose-gold);
+  --color-sea-mist: var(--sea-mist);
+  --color-black-forest: var(--black-forest);
+  --color-desert-palm: var(--desert-palm);
+  --color-ketchup: var(--ketchup);
+  --font-sans: var(--font-brandon-grotesque);
+  --font-serif: var(--font-cormorant);
+  --font-karl: var(--font-karl-geoff);
+  --leading-xtight: 1.1;
+}
+
+@layer base {
+}
+
+@layer components {
+}
+
+body {
+  @apply bg-background text-foreground font-sans;
+}
