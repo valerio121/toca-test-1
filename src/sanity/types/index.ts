@@ -4,6 +4,15 @@ export type SanityImage = SanityImageObject & {
   alt?: string;
 };
 
+export type Navigation = {
+  mainNav: SanityLink[];
+  secondaryNav: SanityLink[];
+};
+
+export type HeaderNav = Navigation & {
+  backgroundImage: SanityImage;
+};
+
 export type SanityLink = {
   title: string;
   isExternal: boolean;

@@ -15,3 +15,23 @@ export const ROUTE_QUERY = defineQuery(`*[_type == "route" && slug.current == $s
       }
     }
   }`);
+
+export const HEADER_NAV_QUERY = defineQuery(`*[_type == "headerNav"][0]{
+    ...,
+    mainNav[]{
+      ...,
+      internal->{
+        slug{
+          current
+        }
+      }
+    },
+    secondaryNav[]{
+      ...,
+      internal->{
+        slug{
+          current
+        }
+      }
+    }
+  }`);
