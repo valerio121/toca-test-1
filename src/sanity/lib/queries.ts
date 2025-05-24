@@ -33,5 +33,50 @@ export const HEADER_NAV_QUERY = defineQuery(`*[_type == "headerNav"][0]{
           current
         }
       }
+    },
+    backgroundImage{
+      ...,
+      asset->{
+        ...
+      },
+      alt
     }
   }`);
+
+export const FOOTER_SETTINGS_QUERY = defineQuery(`*[_type == "footerSettings"][0]{
+  ...,
+  navigationColumns[]{
+    ...,
+    links[]{
+      ...,
+      internal->{
+        slug{
+          current
+        }
+      }
+    }
+  },
+  socialMediaLink{
+    ...,
+    internal->{
+      slug{
+        current
+      }
+    }
+  },
+  legalLinks[]{
+    ...,
+    internal->{
+      slug{
+        current
+      }
+    }
+  }
+  // If brandMarkLogo is added:
+  // brandMarkLogo{
+  //   ...,
+  //   asset->{
+  //     ...
+  //   }
+  // }
+}`);
