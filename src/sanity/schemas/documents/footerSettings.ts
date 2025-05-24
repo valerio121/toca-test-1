@@ -1,4 +1,4 @@
-import { CogIcon, EnvelopeIcon } from '@sanity/icons'; // Added EnvelopeIcon
+import { CogIcon } from '@sanity/icons'; // Added EnvelopeIcon
 import { defineField, defineType } from 'sanity';
 
 export const footerSettings = defineType({

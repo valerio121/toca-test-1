@@ -2,7 +2,6 @@ import Container from '@/components/layout/Container';
 import SanityImageBlock from '@/components/utility/SanityImageBlock';
 import { cn, extractUrl } from '@/libs/functions';
 import type { ContentFeatureSection } from '@/sanity/types';
-import { PortableText } from '@portabletext/react'; // For rendering rich text
 import Link from 'next/link';
 
 // For conditional classes
@@ -12,7 +11,7 @@ interface ContentFeatureSectionProps {
 }
 
 export default function ContentFeatureSectionComponent({ section }: ContentFeatureSectionProps) {
-  const { eyebrow, title, description, image, imagePosition, cta } = section;
+  const { eyebrow, title, image, imagePosition, cta } = section;
   // console.log('section : ', section); // Keep for debugging if needed
 
   const textContent = (

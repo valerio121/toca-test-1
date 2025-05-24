@@ -1,5 +1,5 @@
 import Container from '@/components/layout/Container';
-import { cn, extractUrl } from '@/libs/functions';
+import { extractUrl } from '@/libs/functions';
 import { sanityFetch } from '@/sanity/lib/client';
 import { FOOTER_SETTINGS_QUERY } from '@/sanity/lib/queries';
 import type { FooterSettings, SanityLink as SanityLinkType } from '@/sanity/types';

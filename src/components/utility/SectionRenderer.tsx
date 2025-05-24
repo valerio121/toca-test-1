@@ -2,10 +2,9 @@ import type {
   ContentFeatureSection as ContentFeatureSectionType,
   DualContentSection as DualContentSectionType,
   HomeHeroSection as HomeHeroSectionType,
-  Page,
   ProductGridSection as ProductGridSectionType,
   ScrollingGallerySection as ScrollingGallerySectionType,
-  Section,
+  Section, // Use the Section union type
   SocialFollowSection as SocialFollowSectionType,
   TripleContentGridSection as TripleContentGridSectionType,
 } from '@/sanity/types';
@@ -17,27 +16,28 @@ import ScrollingGallerySectionComponent from '../sections/ScrollingGallerySectio
 import SocialFollowSectionComponent from '../sections/SocialFollowSectionComponent';
 import TripleContentGridSectionComponent from '../sections/TripleContentGridSectionComponent';
 
-// Define a mapping from section _type to React component
-const sectionComponents: Record<string, React.ComponentType<any>> = {
-  homeHeroSection: HomeHeroSectionComponent,
-  contentFeatureSection: ContentFeatureSectionComponent,
-  dualContentSection: DualContentSectionComponent,
-  tripleContentGridSection: TripleContentGridSectionComponent,
-  productGridSection: ProductGridSectionComponent,
-  socialFollowSection: SocialFollowSectionComponent,
-  scrollingGallerySection: ScrollingGallerySectionComponent,
-  // ... other section components will go here
+// Define a more specific type for the props our section components expect
+interface SectionComponentProps {
+  section: Section; // All components take a prop 'section' which is one of the union types
+}
+
+const sectionComponents: Record<string, React.ComponentType<SectionComponentProps>> = {
+  homeHeroSection: HomeHeroSectionComponent as React.ComponentType<SectionComponentProps>,
+  contentFeatureSection: ContentFeatureSectionComponent as React.ComponentType<SectionComponentProps>,
+  dualContentSection: DualContentSectionComponent as React.ComponentType<SectionComponentProps>,
+  tripleContentGridSection: TripleContentGridSectionComponent as React.ComponentType<SectionComponentProps>,
+  productGridSection: ProductGridSectionComponent as React.ComponentType<SectionComponentProps>,
+  socialFollowSection: SocialFollowSectionComponent as React.ComponentType<SectionComponentProps>,
+  scrollingGallerySection: ScrollingGallerySectionComponent as React.ComponentType<SectionComponentProps>,
 };
 
 export function SectionRenderer({ section }: { section: Section }) {
-  // Use the Section union type directly
-  // Early return if section or _type is somehow missing (defensive)
   if (!section || !section._type) {
     console.warn('SectionRenderer: Received invalid section data', section);
     return null;
   }
 
-  const sectionType = section._type; // Store _type before switch narrows section type
+  const sectionType = section._type;
   const SectionComponent = sectionComponents[sectionType];
 
   if (!SectionComponent) {
@@ -45,7 +45,7 @@ export function SectionRenderer({ section }: { section: Section }) {
     return null;
   }
 
-  // Type-specific rendering
+  // The individual case type assertions are still useful for ensuring the correct specific section type is passed.
   switch (sectionType) {
     case 'homeHeroSection':
       return <SectionComponent section={section as HomeHeroSectionType} />;
@@ -62,15 +62,13 @@ export function SectionRenderer({ section }: { section: Section }) {
     case 'scrollingGallerySection':
       return <SectionComponent section={section as ScrollingGallerySectionType} />;
     default:
-      // This case is hit if sectionType is a key in sectionComponents
-      // but not explicitly handled above.
       console.warn(
         `SectionRenderer: Section type "${sectionType}" is mapped to a component but not explicitly handled in the switch. 
-        Rendering with generic prop spread.`
+        Rendering with generic prop spread, assuming component expects 'section' prop.`
       );
-      // We trust that if SectionComponent was found, it can handle the props from 'section'.
-      // The 'section' object still conforms to one of the types in the Section union here,
-      // but its specific type isn't narrowed by a case.
-      return <SectionComponent {...(section as any)} />; // Cast to any for the spread as a last resort
+      // Since all mapped components expect `section: Section`, we can pass it directly.
+      // The `as any` for spread is removed. If a component truly had different prop spreading needs,
+      // this default case would be problematic or would need more advanced type handling.
+      return <SectionComponent section={section} />;
   }
 }

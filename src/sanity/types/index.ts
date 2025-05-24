@@ -7,6 +7,26 @@ export interface SanityImageReference {
   _ref: string;
 }
 
+// Define basic types for palette to avoid 'any'
+export interface SanityImagePaletteSwatch {
+  _type: 'sanity.imagePaletteSwatch';
+  background?: string;
+  foreground?: string;
+  population?: number;
+  title?: string;
+}
+
+export interface SanityImagePalette {
+  _type: 'sanity.imagePalette';
+  darkMuted?: SanityImagePaletteSwatch;
+  darkVibrant?: SanityImagePaletteSwatch;
+  dominant?: SanityImagePaletteSwatch;
+  lightMuted?: SanityImagePaletteSwatch;
+  lightVibrant?: SanityImagePaletteSwatch;
+  muted?: SanityImagePaletteSwatch;
+  vibrant?: SanityImagePaletteSwatch;
+}
+
 // Represents a fully resolved Sanity image asset document
 export interface SanityImageAsset {
   _id: string;
@@ -26,7 +46,7 @@ export interface SanityImageAsset {
       height: number;
       aspectRatio: number;
     };
-    palette?: any; // Keeping palette as any for simplicity, can be typed further
+    palette?: SanityImagePalette; // Changed from any to SanityImagePalette
     lqip?: string;
     blurHash?: string;
     hasAlpha?: boolean;

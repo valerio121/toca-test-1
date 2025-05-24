@@ -1,5 +1,4 @@
 import SanityImageBlock from '@/components/utility/SanityImageBlock';
-import { cn } from '@/libs/functions';
 import type { SanityImage as SanityImageType, ScrollingGallerySection } from '@/sanity/types';
 
 interface ScrollingGallerySectionProps {

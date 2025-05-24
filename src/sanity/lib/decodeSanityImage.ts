@@ -4,13 +4,23 @@ import urlFor from './urlFor';
 const pattern = /^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/;
 
 // Type guard to check if asset is a SanityImageReference
-function isSanityImageReference(asset: any): asset is SanityImageReference {
-  return asset && typeof asset._ref === 'string' && asset._type === 'reference';
+function isSanityImageReference(asset: unknown): asset is SanityImageReference {
+  return (
+    typeof asset === 'object' &&
+    asset !== null &&
+    typeof (asset as SanityImageReference)._ref === 'string' &&
+    (asset as SanityImageReference)._type === 'reference'
+  );
 }
 
 // Type guard to check if asset is a SanityImageAsset (resolved)
-function isSanityImageAsset(asset: any): asset is SanityImageAsset {
-  return asset && typeof asset._id === 'string' && asset._type === 'sanity.imageAsset';
+function isSanityImageAsset(asset: unknown): asset is SanityImageAsset {
+  return (
+    typeof asset === 'object' &&
+    asset !== null &&
+    typeof (asset as SanityImageAsset)._id === 'string' &&
+    (asset as SanityImageAsset)._type === 'sanity.imageAsset'
+  );
 }
 
 export default function processImage(source: SanityImage) {

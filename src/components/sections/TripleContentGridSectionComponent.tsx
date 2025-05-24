@@ -8,7 +8,6 @@ interface TripleContentGridSectionProps {
 export default function TripleContentGridSectionComponent({ section }: TripleContentGridSectionProps) {
   const { items } = section;
 
-  console.log('section : ', section);
   // const { items, sectionTitle } = section; // If you added a sectionTitle
 
   if (!items || items.length !== 3) {
