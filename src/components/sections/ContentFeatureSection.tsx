@@ -2,6 +2,7 @@ import Container from '@/components/layout/Container';
 import SanityImageBlock from '@/components/utility/SanityImageBlock';
 import { cn, extractUrl } from '@/libs/functions';
 import type { ContentFeatureSection } from '@/sanity/types';
+import { PortableText } from '@portabletext/react';
 import Link from 'next/link';
 
 // For conditional classes
@@ -11,23 +12,23 @@ interface ContentFeatureSectionProps {
 }
 
 export default function ContentFeatureSectionComponent({ section }: ContentFeatureSectionProps) {
-  const { eyebrow, title, image, imagePosition, cta } = section;
+  const { eyebrow, title, description, image, imagePosition, cta } = section;
   // console.log('section : ', section); // Keep for debugging if needed
 
+  console.log('section : ', section);
   const textContent = (
     <div
       className={cn(
-        'flex flex-col justify-center',
         imagePosition === 'background'
-          ? 'relative z-10 h-full items-center p-8 text-center text-white'
-          : 'py-8 md:py-12' // Classes for non-background image positions
+          ? 'absolute inset-0 z-20 flex flex-col items-center justify-center p-8 text-center text-white'
+          : 'flex flex-col justify-center py-8 md:py-12' // Classes for non-background image positions
       )}
     >
       {eyebrow && (
         <p
           className={cn(
-            'mb-2 text-xs font-semibold tracking-widest uppercase md:mb-3 md:text-sm',
-            imagePosition === 'background' ? 'text-amber-400' : 'text-primary' // Using amber for gold/beige, adjust as needed
+            'mb-2 text-[10px] font-semibold tracking-[0.2em] uppercase md:mb-3 md:text-xs',
+            imagePosition === 'background' ? 'text-amber-400' : 'text-primary'
           )}
         >
           {eyebrow}
@@ -36,12 +37,29 @@ export default function ContentFeatureSectionComponent({ section }: ContentFeatu
       {title && (
         <h2
           className={cn(
-            'mb-4 font-serif text-3xl md:text-4xl lg:text-5xl', // Using font-serif, adjust weight as needed
-            imagePosition === 'background' ? 'text-white' : 'text-gray-900'
+            'mx-auto mb-6 max-w-2xl font-serif text-3xl leading-snug',
+            imagePosition === 'background' ? 'text-white' : 'text-gray-900',
+            'md:text-4xl lg:text-5xl' // General responsive sizes
           )}
         >
           {title}
         </h2>
+      )}
+      {/* Description is not shown in the target screenshot for this specific layout variation */}
+      {/* {description && imagePosition === 'background' && (
+        <div
+          className={cn(
+            'prose prose-sm md:prose-base lg:prose-lg max-w-xl text-center text-gray-200',
+            imagePosition === 'background' ? 'prose-invert' : ''
+          )}
+        >
+          <PortableText value={description} />
+        </div>
+      )} */}
+      {description && imagePosition !== 'background' && (
+        <div className={cn('prose lg:prose-lg max-w-none')}>
+          <PortableText value={description} />
+        </div>
       )}
 
       {cta && (cta.internal?.slug?.current || cta.external) && (
@@ -49,10 +67,10 @@ export default function ContentFeatureSectionComponent({ section }: ContentFeatu
           href={extractUrl(cta)}
           target={cta.isNewWindow ? '_blank' : '_self'}
           className={cn(
-            'mt-6 inline-block rounded-full px-8 py-2.5 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+            'mt-6 inline-block rounded-md px-6 py-2 text-xs font-medium tracking-wider uppercase transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:px-8 md:py-2.5 md:text-sm',
             imagePosition === 'background'
               ? 'border border-white text-white hover:bg-white/10 focus-visible:outline-white'
-              : 'bg-primary hover:bg-primary/80 focus-visible:outline-primary text-white' // Style for non-background CTA
+              : 'bg-primary hover:bg-primary/80 focus-visible:outline-primary text-white'
           )}
         >
           {cta.title || 'Learn More'}
@@ -61,32 +79,25 @@ export default function ContentFeatureSectionComponent({ section }: ContentFeatu
     </div>
   );
 
-  const imageContent = image?.asset && (
-    <div
-      className={cn(
-        imagePosition === 'background'
-          ? 'absolute inset-4 z-0 overflow-hidden rounded-md md:inset-6 lg:inset-8' // Added inset for margin & rounded
-          : 'flex items-center justify-center p-4 md:p-8' // Original classes for other positions
-      )}
-    >
-      <SanityImageBlock
-        image={image}
-        className={cn(
-          'h-full w-full object-cover',
-          imagePosition !== 'background' && 'rounded-lg shadow-lg' // Keep rounded for non-bg
-        )}
-        fill // Fill prop will make it cover the parent div defined above
-        priority={imagePosition === 'background'}
-      />
-    </div>
+  const imageRender = image?.asset && (
+    <SanityImageBlock
+      image={image}
+      className={cn(imagePosition === 'background' ? 'h-full w-full object-cover' : 'rounded-lg shadow-lg')}
+      fill={imagePosition === 'background'}
+      priority={imagePosition === 'background'}
+    />
   );
 
   if (imagePosition === 'background') {
     return (
-      <section className='relative flex min-h-[700px] w-full items-center justify-center bg-black py-16 md:min-h-[800px] md:py-24 lg:min-h-[900px]'>
-        {imageContent}
-        <div className='absolute inset-4 z-[5] rounded-md bg-black/70 md:inset-6 lg:inset-8' />
-        <Container className='relative z-10 w-full'>{textContent}</Container>
+      <section className='w-full bg-black py-12 md:py-12'>
+        <Container>
+          <div className='relative min-h-[70vh] w-full overflow-hidden rounded-lg shadow-xl md:min-h-[80vh] lg:min-h-[650px]'>
+            {imageRender}
+            <div className='absolute inset-0 z-10 rounded-lg bg-black/75' />
+            {textContent}
+          </div>
+        </Container>
       </section>
     );
   }
@@ -102,13 +113,13 @@ export default function ContentFeatureSectionComponent({ section }: ContentFeatu
       >
         {imagePosition === 'left' ? (
           <>
-            {imageContent}
+            {imageRender}
             {textContent}
           </>
         ) : (
           <>
             {textContent}
-            {imageContent}
+            {imageRender}
           </>
         )}
       </div>

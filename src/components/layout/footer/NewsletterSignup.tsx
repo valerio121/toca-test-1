@@ -39,33 +39,9 @@ export default function NewsletterSignup({
       return;
     }
 
-    // TODO: Implement actual form submission logic here
-    // Example: using fetch to post to an API route or third-party service
-    // try {
-    //   const response = await fetch(formAction, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email, location: selectedLocation }),
-    //   });
-    //   if (response.ok) {
-    //     setMessage('Thank you for subscribing!');
-    //     setEmail('');
-    //     setSelectedLocation('');
-    //   } else {
-    //     const errorData = await response.json();
-    //     setMessage(errorData.message || 'Subscription failed. Please try again.');
-    //   }
-    // } catch (error) {
-    //   setMessage('An error occurred. Please try again.');
-    // }
-
-    // Placeholder for demonstration
     setMessage(
       `Thank you for subscribing with ${email} for ${selectedLocation || 'all locations'}! (Demo - not actually submitted)`
     );
-    // setEmail('');
-    // setSelectedLocation('');
-
     setIsSubmitting(false);
   };
 

@@ -60,6 +60,7 @@ export interface SanityImageAsset {
 export type SanityImage = Omit<SanityImageObjectNative, 'asset'> & {
   asset: SanityImageReference | SanityImageAsset;
   alt?: string;
+  _key?: string;
 };
 
 export type Navigation = {
@@ -72,6 +73,7 @@ export type HeaderNav = Navigation & {
 };
 
 export type SanityLink = {
+  _key?: string;
   title: string;
   isExternal: boolean;
   isNewWindow: boolean;
@@ -181,7 +183,7 @@ export type SocialFollowSection = BaseSection & {
 // New ScrollingGallerySection type
 export type ScrollingGallerySection = BaseSection & {
   _type: 'scrollingGallerySection';
-  // decorativeIcon?: SanityImage; // If added to schema
+  decorativeIcon?: SanityImage;
   galleryImages: (SanityImage & { _key: string })[]; // Array of SanityImage, each will have a _key from Sanity
 };
 
